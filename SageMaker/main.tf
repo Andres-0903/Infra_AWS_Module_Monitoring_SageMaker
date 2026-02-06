@@ -12,13 +12,15 @@ resource "aws_cloudwatch_metric_alarm" "model_latency" {
 
   tags = merge({
     Name = "${var.project}-${var.name_service}-model_latency${each.key}-${var.environment}"
-    }
-  )
-  dimensions = merge(local.common_dimensions, { EndpointName = each.key })
+  })
 
-  alarm_actions = local.alarm_actions
-  ok_actions    = local.ok_actions
+  dimensions = {
+    EndpointName = each.key
+  }
 
+  alarm_actions             = [var.sns_topic_arn]
+  ok_actions                = [var.sns_topic_arn]
+  insufficient_data_actions = []
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
@@ -35,12 +37,15 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
 
   tags = merge({
     Name = "${var.project}-${var.name_service}-cpu_utilization${each.key}-${var.environment}"
-    }
-  )
-  dimensions = merge(local.common_dimensions, { EndpointName = each.key })
+  })
 
-  alarm_actions = local.alarm_actions
-  ok_actions    = local.ok_actions
+  dimensions = {
+    EndpointName = each.key
+  }
+
+  alarm_actions             = [var.sns_topic_arn]
+  ok_actions                = [var.sns_topic_arn]
+  insufficient_data_actions = []
 }
 
 resource "aws_cloudwatch_metric_alarm" "invocation_5xx_errors" {
@@ -57,10 +62,13 @@ resource "aws_cloudwatch_metric_alarm" "invocation_5xx_errors" {
 
   tags = merge({
     Name = "${var.project}-${var.name_service}-invocation_5xx_errors${each.key}-${var.environment}"
-    }
-  )
-  dimensions = merge(local.common_dimensions, { EndpointName = each.key })
+  })
 
-  alarm_actions = local.alarm_actions
-  ok_actions    = local.ok_actions
+  dimensions = {
+    EndpointName = each.key
+  }
+
+  alarm_actions             = [var.sns_topic_arn]
+  ok_actions                = [var.sns_topic_arn]
+  insufficient_data_actions = []
 }
